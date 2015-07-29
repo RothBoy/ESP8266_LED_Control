@@ -23,7 +23,6 @@ public class HttpRequestAsyncTask extends AsyncTask<Void, Void, Void> {
     private String requestReply,ipAddress, portNumber;
     private Context context;
     private AlertDialog alertDialog;
-    private String parameter;
     private String redValue, greenValue, blueValue;
 
     public HttpRequestAsyncTask(Context context, String param_redValue, String param_greenValue,

@@ -34,6 +34,8 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
         // Handle Initilization
         viewPager = (ViewPager) findViewById(R.id.pager);
         actionBar = getActionBar();
+        actionBar.setIcon(R.drawable.bulblogo2);
+        actionBar.setDisplayShowHomeEnabled(true);
         mAdapter = new TabsPagerAdapter(getSupportFragmentManager());
 
         viewPager.setAdapter(mAdapter);
@@ -64,6 +66,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
             public void onPageScrollStateChanged(int arg0) {
             }
         });
+        // load Settings
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
     }
 

@@ -11,6 +11,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Color 1"
+        android:background="@android:color/holo_blue_bright"
+        android:padding="50dp"
         android:id="@+id/buttonColor1" />
 
     <Button
