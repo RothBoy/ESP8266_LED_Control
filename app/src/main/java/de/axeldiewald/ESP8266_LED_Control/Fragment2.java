@@ -1,10 +1,7 @@
 package de.axeldiewald.ESP8266_LED_Control;
 
 
-import android.app.AlertDialog;
-import android.content.Context;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
@@ -158,89 +155,6 @@ public class Fragment2 extends Fragment implements  View.OnClickListener, SeekBa
         return serverResponse;
     }
 
-    private class HttpRequestAsyncTask extends AsyncTask<Void, Void, Void> {
-
-        // declare variables needed
-        private String requestReply,ipAddress, portNumber;
-        private Context context;
-        private AlertDialog alertDialog;
-        private String parameter;
-        private String redValue, greenValue, blueValue;
-
-        /**
-         * Description: The asyncTask class constructor. Assigns the values used in its other methods.
-         * @param context the application context, needed to create the dialog
-         * @param blueValue the pin number to toggle
-         * @param ipAddress the ip address to send the request to
-         * @param portNumber the port number of the ip address
-         */
-        public HttpRequestAsyncTask(Context context, String redValue, String greenValue,
-                                    String blueValue, String ipAddress, String portNumber,
-                                    String parameter)
-        {
-            this.context = context;
-
-            alertDialog = new AlertDialog.Builder(this.context)
-                    .setTitle("HTTP Response From IP Address:")
-                    .setCancelable(true)
-                    .create();
-
-            this.ipAddress = ipAddress;
-            this.redValue = redValue;
-            this.greenValue = greenValue;
-            this.blueValue = blueValue;
-            this.portNumber = portNumber;
-            this.parameter = parameter;
-        }
-
-        /**
-         * Name: doInBackground
-         * Description: Sends the request to the ip address
-         * @param voids
-         * @return
-         */
-        @Override
-        protected Void doInBackground(Void... voids) {
-            alertDialog.setMessage("Data sent, waiting for reply from server...");
-            if(!alertDialog.isShowing())
-            {
-                alertDialog.show();
-            }
-            requestReply = sendRequest(redValue, greenValue, blueValue, ipAddress, portNumber);
-            return null;
-        }
-
-        /**
-         * Name: onPostExecute
-         * Description: This function is executed after the HTTP request returns from the ip address.
-         * The function sets the dialog's message with the reply text from the server and display the dialog
-         * if it's not displayed already (in case it was closed by accident);
-         * @param aVoid void parameter
-         */
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            alertDialog.setMessage(requestReply);
-            if(!alertDialog.isShowing())
-            {
-                alertDialog.show(); // show dialog
-            }
-        }
-
-        /**
-         * Name: onPreExecute
-         * Description: This function is executed before the HTTP request is sent to ip address.
-         * The function will set the dialog's message and display the dialog.
-         */
-        @Override
-        protected void onPreExecute() {
-            alertDialog.setMessage("Sending data to server, please wait...");
-            if(!alertDialog.isShowing())
-            {
-                alertDialog.show();
-            }
-        }
-
-    }
 
 
 
