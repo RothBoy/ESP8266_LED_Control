@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="de.axeldiewald.esp8266_2" >
+    package="de.axeldiewald.ESP8266_LED_Control" >
 
     <uses-sdk android:minSdkVersion="11" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -11,7 +11,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".MainActivity"
+            android:name="de.axeldiewald.ESP8266_LED_Control.MainActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -20,12 +20,12 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".SettingsActivity"
+            android:name="de.axeldiewald.ESP8266_LED_Control.SettingsActivity"
             android:label="@string/title_activity_settings"
-            android:parentActivityName=".MainActivity" >
+            android:parentActivityName="de.axeldiewald.ESP8266_LED_Control.MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="de.axeldiewald.esp8266_2.MainActivity" />
+                android:value="de.axeldiewald.ESP8266_LED_Control.MainActivity" />
         </activity>
     </application>
 

@@ -1,12 +1,12 @@
-package de.axeldiewald.esp8266_2.adapter;
+package de.axeldiewald.ESP8266_LED_Control.adapter;
 
 /**
  * Created by Axel on 27.07.2015.
  */
 
 
-import de.axeldiewald.esp8266_2.Fragment1;
-import de.axeldiewald.esp8266_2.Fragment2;
+import de.axeldiewald.ESP8266_LED_Control.Fragment1;
+import de.axeldiewald.ESP8266_LED_Control.Fragment2;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;

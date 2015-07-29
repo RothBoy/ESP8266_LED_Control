@@ -1,4 +1,4 @@
-package de.axeldiewald.esp8266_2;
+package de.axeldiewald.ESP8266_LED_Control;
 
 
 import android.os.Bundle;

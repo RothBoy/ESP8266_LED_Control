@@ -1,4 +1,4 @@
-package de.axeldiewald.esp8266_2;
+package de.axeldiewald.ESP8266_LED_Control;
 
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
@@ -11,7 +11,7 @@ import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import de.axeldiewald.esp8266_2.adapter.TabsPagerAdapter;
+import de.axeldiewald.ESP8266_LED_Control.adapter.TabsPagerAdapter;
 
 public class MainActivity extends FragmentActivity implements ActionBar.TabListener {
 
