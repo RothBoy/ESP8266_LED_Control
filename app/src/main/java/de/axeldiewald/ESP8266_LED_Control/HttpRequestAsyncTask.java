@@ -2,7 +2,9 @@ package de.axeldiewald.ESP8266_LED_Control;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.preference.PreferenceManager;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -24,40 +26,27 @@ public class HttpRequestAsyncTask extends AsyncTask<Void, Void, Void> {
     private Context context;
     private AlertDialog alertDialog;
     private String redValue, greenValue, blueValue;
+    // Declare Settings
+    SharedPreferences sharedPreferences;
 
-    public HttpRequestAsyncTask(Context context, String param_redValue, String param_greenValue,
-                                String param_blueValue, String ipAddress, String portNumber,
-                                String parameter)
+    public HttpRequestAsyncTask(Context context, String param_redValue, String param_greenValue, String param_blueValue)
     {
         this.context = context;
+        // Get Settings
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext());
 
         alertDialog = new AlertDialog.Builder(this.context)
                 .setTitle("HTTP Response From IP Address:")
                 .setCancelable(true)
                 .create();
 
-        this.ipAddress = ipAddress;
-        this.portNumber = portNumber;
-        // color Strings must be 3 characters long
-        String[] colorValues = {param_redValue, param_greenValue, param_blueValue};
-        int i = 0;
-        for (String colorValue_name : colorValues) {
-            switch(colorValue_name.length()){
-                case 2:
-                    colorValue_name = "0" + colorValue_name;
-                    break;
-                case 1:
-                    colorValue_name = "00" + colorValue_name;
-                    break;
-                default:
-                    break;
-            }
-            colorValues[i] = colorValue_name;
-            i += 1;
-        }
-        this.redValue = colorValues[0];
-        this.greenValue = colorValues[1];
-        this.blueValue = colorValues[2];
+        // Get IP Address and Port Number
+        ipAddress = sharedPreferences.getString(SettingsActivity.PREF_IP, "");
+        portNumber = sharedPreferences.getString(SettingsActivity.PREF_PORT, "");
+
+        redValue = param_redValue;
+        greenValue = param_greenValue;
+        blueValue = param_blueValue;
     }
 
     /**
@@ -114,10 +103,9 @@ public class HttpRequestAsyncTask extends AsyncTask<Void, Void, Void> {
         try {
 
             HttpClient httpclient = new DefaultHttpClient(); // create an HTTP client
-            // define the URL e.g. http://myIpaddress:myport/?pin=13 (to toggle pin 13 for example)
 
 //            URI website = new URI("http://"+ipAddress+":"+portNumber+"/?"+parameterName+"="+parameterValue);
-            //            URI website = new URI("https://api.thingspeak.com/update?key=5LGUCK3V08VW75PZ&field1="+redValue+"&field2="+greenValue+"&field3="+blueValue);
+//            URI website = new URI("https://api.thingspeak.com/update?key=5LGUCK3V08VW75PZ&field1="+redValue+"&field2="+greenValue+"&field3="+blueValue);
             URI website = new URI("http://"+ipAddress+":"+portNumber+"/?field1="+redValue+"&field2="+greenValue+"&field3="+blueValue);
 //            URI website = new URI("https://api.thingspeak.com/update?key=5LGUCK3V08VW75PZ&field1=10");
 

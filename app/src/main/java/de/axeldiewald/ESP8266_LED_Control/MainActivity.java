@@ -2,6 +2,7 @@ package de.axeldiewald.ESP8266_LED_Control;
 
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -10,6 +11,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import de.axeldiewald.ESP8266_LED_Control.adapter.TabsPagerAdapter;
 
@@ -104,9 +106,14 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
     public void onTabReselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
     }
 
-    public void newFavourite(int redValue, int greenValue, int blueValue) {
-        // The user selected the headline of an article from the HeadlinesFragment
-        // Do something here to display that article
+    public void newFavourite(ColorBundle colorBundleInst) {
+        Context context = getApplicationContext();
+        String text = "SAVE A NEW FAVOURITE: \nRot: " + String.valueOf(colorBundleInst.redValue)
+                + " Gruen: " + String.valueOf(colorBundleInst.greenValue)
+                + " Blau: " + String.valueOf(colorBundleInst.blueValue);
+        int duration = Toast.LENGTH_LONG;
+        Toast toast = Toast.makeText(context, text, duration);
+        toast.show();
     }
 
 }
