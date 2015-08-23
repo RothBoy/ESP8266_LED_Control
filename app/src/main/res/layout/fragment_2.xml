@@ -1,4 +1,5 @@
-<LinearLayout
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical"
@@ -10,72 +11,91 @@
     <TextView
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:layout_gravity="center_horizontal"
         android:layout_margin="20dp"
-        android:id="@+id/spaceShowColor" />
+        android:id="@+id/spaceShowColor"
+        android:layout_toLeftOf="@+id/buttonSave"
+        android:layout_alignParentLeft="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/buttonSave"
+        android:text="Save as Favourit"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="46dp"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Red Value:"
-        android:id="@+id/textView3" />
+        android:id="@+id/textView3"
+        android:layout_below="@id/spaceShowColor"/>
 
     <SeekBar
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:max="255"
-        android:id="@+id/seekBarRed" />
+        android:id="@+id/seekBarRed"
+        android:layout_below="@id/textView3"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="0"
         android:id="@+id/textViewCurRedValue"
-        android:layout_gravity="center_horizontal" />
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/seekBarRed"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Green Value:"
-        android:id="@+id/textView4" />
+        android:id="@+id/textView4"
+        android:layout_below="@id/textViewCurRedValue"/>
 
     <SeekBar
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:max="255"
-        android:id="@+id/seekBarGreen" />
+        android:id="@+id/seekBarGreen"
+        android:layout_below="@id/textView4"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="0"
         android:id="@+id/textViewCurGreenValue"
-        android:layout_gravity="center_horizontal" />
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/seekBarGreen"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Blue Value:"
-        android:id="@+id/textView5" />
+        android:id="@+id/textView5"
+        android:layout_below="@id/textViewCurGreenValue"/>
 
     <SeekBar
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/seekBarBlue"
-        android:max="255" />
+        android:max="255"
+        android:layout_below="@id/textView5"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="0"
         android:id="@+id/textViewCurBlueValue"
-        android:layout_gravity="center_horizontal" />
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/seekBarBlue"/>
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Send"
-        android:id="@+id/buttonSend" />
+        android:id="@+id/buttonSend"
+        android:layout_below="@id/textViewCurBlueValue"/>
 
 
-</LinearLayout>
+</RelativeLayout>

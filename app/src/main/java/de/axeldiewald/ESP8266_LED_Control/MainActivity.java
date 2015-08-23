@@ -13,7 +13,7 @@ import android.view.MenuItem;
 
 import de.axeldiewald.ESP8266_LED_Control.adapter.TabsPagerAdapter;
 
-public class MainActivity extends FragmentActivity implements ActionBar.TabListener {
+public class MainActivity extends FragmentActivity implements ActionBar.TabListener, Fragment2.OnNewFavouriteListener {
 
     // declare Handles
     private ViewPager viewPager;
@@ -34,12 +34,11 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
         // Handle Initilization
         viewPager = (ViewPager) findViewById(R.id.pager);
         actionBar = getActionBar();
-        actionBar.setIcon(R.drawable.bulblogo2);
         actionBar.setDisplayShowHomeEnabled(true);
         mAdapter = new TabsPagerAdapter(getSupportFragmentManager());
 
         viewPager.setAdapter(mAdapter);
-        actionBar.setHomeButtonEnabled(false);
+        //actionBar.setHomeButtonEnabled(false);
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
         // Adding Tabs
@@ -103,6 +102,11 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 
     @Override
     public void onTabReselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
+    }
+
+    public void newFavourite(int redValue, int greenValue, int blueValue) {
+        // The user selected the headline of an article from the HeadlinesFragment
+        // Do something here to display that article
     }
 
 }

@@ -1,6 +1,7 @@
 package de.axeldiewald.ESP8266_LED_Control;
 
 
+import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -29,20 +30,21 @@ import java.net.URISyntaxException;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class Fragment2 extends Fragment implements  View.OnClickListener, SeekBar.OnSeekBarChangeListener {
+public class Fragment2 extends Fragment implements SeekBar.OnSeekBarChangeListener {
 
     // declare buttons,TextViews and SeekBars
-    private Button ButtonSend;
+    private Button ButtonSend, ButtonSave;
     private TextView textViewRedValue, textViewGreenValue, textViewBlueValue;
     private SeekBar seekBarRedValue, seekBarGreenValue, seekBarBlueValue;
     private TextView spaceColor;
     // declare Settings
     SharedPreferences sharedPreferences;
+    //
+    OnNewFavouriteListener mCallback;
 
     public Fragment2() {
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -53,7 +55,9 @@ public class Fragment2 extends Fragment implements  View.OnClickListener, SeekBa
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
         // assign buttons & OnClickListener
         ButtonSend = (Button) view.findViewById(R.id.buttonSend);
-        ButtonSend.setOnClickListener(this);
+        ButtonSend.setOnClickListener(buttonSendClickHandler);
+        ButtonSave = (Button) view.findViewById(R.id.buttonSave);
+        ButtonSave.setOnClickListener(buttonSaveClickHandler);
         // assign TextViews
         textViewRedValue =(TextView)view.findViewById(R.id.textViewCurRedValue);
         textViewGreenValue =(TextView)view.findViewById(R.id.textViewCurGreenValue);
@@ -71,23 +75,50 @@ public class Fragment2 extends Fragment implements  View.OnClickListener, SeekBa
     }
 
     @Override
-    public void onClick(View view){
-        // get RGB Values
-        String redValue = String.valueOf(seekBarRedValue.getProgress()).trim();
-        String greenValue = String.valueOf(seekBarGreenValue.getProgress()).trim();;
-        String blueValue = String.valueOf(seekBarBlueValue.getProgress()).trim();
-        // get the ip address
-        String ipAddress = sharedPreferences.getString(SettingsActivity.PREF_IP, "");
-        // get the port number
-        String portNumber = sharedPreferences.getString(SettingsActivity.PREF_PORT, "");
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
 
-
-        // execute HTTP request
-        if(ipAddress.length()>0 && portNumber.length()>0) {
-            new HttpRequestAsyncTask(
-                    view.getContext(), redValue, greenValue, blueValue, ipAddress, portNumber, "pin"
-            ).execute();
+        try {
+            mCallback = (OnNewFavouriteListener) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString()
+                    + " must implement OnNewFavouriteListener");
         }
+    }
+
+    View.OnClickListener buttonSendClickHandler = new View.OnClickListener(){
+        public void onClick(View view){
+            // get RGB Values
+            String redValue = String.valueOf(seekBarRedValue.getProgress()).trim();
+            String greenValue = String.valueOf(seekBarGreenValue.getProgress()).trim();;
+            String blueValue = String.valueOf(seekBarBlueValue.getProgress()).trim();
+            // get the ip address
+            String ipAddress = sharedPreferences.getString(SettingsActivity.PREF_IP, "");
+            // get the port number
+            String portNumber = sharedPreferences.getString(SettingsActivity.PREF_PORT, "");
+
+            // execute HTTP request
+            if(ipAddress.length()>0 && portNumber.length()>0) {
+                new HttpRequestAsyncTask(
+                        view.getContext(), redValue, greenValue, blueValue, ipAddress, portNumber, "pin"
+                ).execute();
+            }
+        }
+    };
+
+    View.OnClickListener buttonSaveClickHandler = new View.OnClickListener(){
+        public void onClick(View view){
+            // get RGB Values
+            Integer redValue = seekBarRedValue.getProgress();
+            Integer greenValue = seekBarGreenValue.getProgress();
+            Integer blueValue = seekBarBlueValue.getProgress();
+            // send to Parent Activity
+            mCallback.newFavourite(redValue, greenValue, blueValue);
+        }
+    };
+
+    public interface OnNewFavouriteListener {
+        public void newFavourite(int redValue, int greenValue, int blueValue);
     }
 
     @Override
