@@ -5,26 +5,12 @@
     android:weightSum="1"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout1"
     android:padding="10dp">
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Color 1"
-        android:background="@android:color/holo_blue_bright"
-        android:padding="50dp"
-        android:id="@+id/buttonColor1" />
 
-    <Button
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Color 2"
-        android:id="@+id/buttonColor2" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Color 3"
-        android:id="@+id/buttonColor3"
-        android:singleLine="true" />
+        android:text="Here are your Favourites:" />
 </LinearLayout>
