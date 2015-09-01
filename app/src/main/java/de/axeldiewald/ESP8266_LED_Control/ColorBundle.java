@@ -1,6 +1,8 @@
 package de.axeldiewald.ESP8266_LED_Control;
 
 import android.content.Context;
+import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 /**
@@ -11,6 +13,8 @@ public class ColorBundle {
     public Integer redValue, greenValue, blueValue;
     public String redValueString, greenValueString, blueValueString;
     private Context context;
+    public String name;
+    public int id;
 
     public ColorBundle(Context context, Integer red, Integer green, Integer blue){
 
@@ -45,6 +49,20 @@ public class ColorBundle {
     }
 
     public void SendToLedStrip(){
-        new HttpRequestAsyncTask(context, redValueString, greenValueString, blueValueString).execute();
+        new HttpGetRequest(context, redValueString, greenValueString, blueValueString).execute();
     }
+
+    public void setName(String pname){
+        name = pname;
+    }
+
+    public String getName(){
+        return name;
+    }
+
+    public View.OnClickListener clickListener = new View.OnClickListener(){
+        public void onClick(View v) {
+            SendToLedStrip();
+        }
+    };
 }

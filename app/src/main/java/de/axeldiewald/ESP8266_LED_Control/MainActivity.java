@@ -1,8 +1,8 @@
 package de.axeldiewald.ESP8266_LED_Control;
 
 import android.app.ActionBar;
+import android.app.DialogFragment;
 import android.app.FragmentTransaction;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -11,11 +11,10 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import de.axeldiewald.ESP8266_LED_Control.adapter.TabsPagerAdapter;
 
-public class MainActivity extends FragmentActivity implements ActionBar.TabListener, Fragment2.OnNewFavouriteListener {
+public class MainActivity extends FragmentActivity implements ActionBar.TabListener, SaveFavouriteDialogFragment.SaveFavouriteDialogListener {
 
     // declare Handles
     private ViewPager viewPager;
@@ -106,20 +105,21 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
     public void onTabReselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
     }
 
-    public void newFavourite(ColorBundle colorBundleInst) {
+
+    // The dialog fragment receives a reference to this Activity through the
+    // Fragment.onAttach() callback, which it uses to call the following methods
+    // defined by the NoticeDialogFragment.NoticeDialogListener interface
+    @Override
+    public void onDialogPositiveClick(DialogFragment dialog, ColorBundle colorBundleInst) {
+        // get Instance of Fragment1
         Fragment1 fragment1 = (Fragment1) mAdapter.getItem(0);
-        fragment1.addFavouriteFragment(getApplicationContext(), colorBundleInst);
+        // add Button to Fragment1
+        fragment1.addFavouriteButton(getApplicationContext(), colorBundleInst);
+    }
 
-        /*Fragment1 fragment1container = (Fragment1) getSupportFragmentManager().findFragmentById(R.id.fragment1container);
-
-        // Create a new Fragment to be placed in the activity layout
-        FavouriteFragment newFragment = new FavouriteFragment();
-
-        // Add the fragment to the 'fragment_container' FrameLayout
-        getChildFragmentManager().beginTransaction().add(R.id.fragment1container, newFragment).commit();
-        */
-
-
+    @Override
+    public void onDialogNegativeClick(DialogFragment dialog) {
+        // User touched the dialog's negative button
     }
 
 }

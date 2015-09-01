@@ -1,7 +1,6 @@
 package de.axeldiewald.ESP8266_LED_Control;
 
 
-import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -26,8 +25,6 @@ public class Fragment2 extends Fragment implements SeekBar.OnSeekBarChangeListen
     private TextView spaceColor;
     // declare Settings
     SharedPreferences sharedPreferences;
-    //
-    OnNewFavouriteListener mCallback;
 
     public Fragment2() {
         // Required empty public constructor
@@ -61,17 +58,6 @@ public class Fragment2 extends Fragment implements SeekBar.OnSeekBarChangeListen
         return view;
     }
 
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-
-        try {
-            mCallback = (OnNewFavouriteListener) activity;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
-                    + " must implement OnNewFavouriteListener");
-        }
-    }
 
     View.OnClickListener buttonSendClickHandler = new View.OnClickListener() {
         public void onClick(View view) {
@@ -84,14 +70,13 @@ public class Fragment2 extends Fragment implements SeekBar.OnSeekBarChangeListen
     View.OnClickListener buttonSaveClickHandler = new View.OnClickListener() {
         public void onClick(View view) {
             ColorBundle colorBundleInst = new ColorBundle(view.getContext(), seekBarRed.getProgress(), seekBarGreen.getProgress(), seekBarBlue.getProgress());
-            // send to Parent Activity
-            mCallback.newFavourite(colorBundleInst);
+            // Create Dialog for Saving a new Favourite
+            SaveFavouriteDialogFragment dialog = new SaveFavouriteDialogFragment();
+            dialog.setColorBundle(colorBundleInst);
+            dialog.show(getFragmentManager(), "SaveFavouriteDialog");
         }
     };
 
-    public interface OnNewFavouriteListener {
-        public void newFavourite(ColorBundle colorBundleInst);
-    }
 
     @Override
     public void onStopTrackingTouch(SeekBar seekBar) {
