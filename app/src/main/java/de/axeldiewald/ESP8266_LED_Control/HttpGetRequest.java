@@ -13,7 +13,6 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 
 /**
@@ -107,10 +106,10 @@ public class HttpGetRequest extends AsyncTask<Void, Void, Void> {
         // Only display the first 500 characters of the retrieved
         // web page content.
         int len = 500;
-        String myurl = "http://" + ipAddress + ":" + portNumber + "/?field1=" + redValue + "&field2=" + greenValue + "&field3=" + blueValue;
+        String myUrl = "http://" + ipAddress + ":" + portNumber + "/?field1=" + redValue + "&field2=" + greenValue + "&field3=" + blueValue;
 
         try {
-            URL url = new URL(myurl);
+            URL url = new URL(myUrl);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setReadTimeout(10000 /* milliseconds */);
             conn.setConnectTimeout(15000 /* milliseconds */);

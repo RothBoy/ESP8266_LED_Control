@@ -25,6 +25,9 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
     // declare Settings
     SharedPreferences sharedPreferences;
 
+    // TODO Save Favourites for reopening the App
+    // TODO Add option to delete Favourites
+    // TODO Check capability of landscape mode
 
 
     @Override
@@ -32,7 +35,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Handle Initilization
+        // Handle Initialisation
         viewPager = (ViewPager) findViewById(R.id.pager);
         actionBar = getActionBar();
         actionBar.setDisplayShowHomeEnabled(true);
@@ -53,8 +56,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 
             @Override
             public void onPageSelected(int position) {
-                // on changing the page
-                // make respected tab selected
+                // on changing the page make respected tab selected
                 actionBar.setSelectedNavigationItem(position);
             }
 
@@ -66,6 +68,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
             public void onPageScrollStateChanged(int arg0) {
             }
         });
+
         // load Settings
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
     }
@@ -106,15 +109,12 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
     }
 
 
-    // The dialog fragment receives a reference to this Activity through the
-    // Fragment.onAttach() callback, which it uses to call the following methods
-    // defined by the NoticeDialogFragment.NoticeDialogListener interface
     @Override
     public void onDialogPositiveClick(DialogFragment dialog, ColorBundle colorBundleInst) {
-        // get Instance of Fragment1
-        Fragment1 fragment1 = (Fragment1) mAdapter.getItem(0);
-        // add Button to Fragment1
-        fragment1.addFavouriteButton(getApplicationContext(), colorBundleInst);
+        // get Instance of FavouriteFragment
+        FavouriteFragment favouriteFragment = (FavouriteFragment) mAdapter.getItem(0);
+        // add Button to FavouriteFragment
+        favouriteFragment.addFavouriteButton(colorBundleInst);
     }
 
     @Override

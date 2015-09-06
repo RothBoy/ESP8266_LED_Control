@@ -2,8 +2,6 @@ package de.axeldiewald.ESP8266_LED_Control;
 
 import android.content.Context;
 import android.view.View;
-import android.widget.Button;
-import android.widget.Toast;
 
 /**
  * Created by Axel on 23.08.2015.
@@ -23,10 +21,10 @@ public class ColorBundle {
         redValue = red;
         greenValue = green;
         blueValue = blue;
-        // color Strings must be 3 characters long
         redValueString = String.valueOf(red).trim();
         greenValueString = String.valueOf(green).trim();
         blueValueString = String.valueOf(blue).trim();
+        // TODO Implement Method to set String length to 3
         String[] colorValues = {redValueString, greenValueString, blueValueString};
         int i = 0;
         for (String colorValue_name : colorValues) {

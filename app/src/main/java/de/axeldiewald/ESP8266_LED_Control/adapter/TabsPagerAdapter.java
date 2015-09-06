@@ -5,8 +5,8 @@ package de.axeldiewald.ESP8266_LED_Control.adapter;
  */
 
 
-import de.axeldiewald.ESP8266_LED_Control.Fragment1;
-import de.axeldiewald.ESP8266_LED_Control.Fragment2;
+import de.axeldiewald.ESP8266_LED_Control.FavouriteFragment;
+import de.axeldiewald.ESP8266_LED_Control.CustomizeFragment;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -24,10 +24,10 @@ public class TabsPagerAdapter extends FragmentPagerAdapter {
         switch (index) {
             case 0:
                 // Favourite fragment activity
-                return new Fragment1();
+                return new FavouriteFragment();
             case 1:
                 // Customize fragment activity
-                return new Fragment2();
+                return new CustomizeFragment();
 
         }
 

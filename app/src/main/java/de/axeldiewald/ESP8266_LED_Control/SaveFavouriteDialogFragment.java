@@ -16,7 +16,6 @@ import android.widget.ImageView;
 public class SaveFavouriteDialogFragment extends DialogFragment {
 
     ColorBundle colorBundleInst;
-    // Use this instance of the interface to deliver action events
     SaveFavouriteDialogListener mListener;
 
     @Override

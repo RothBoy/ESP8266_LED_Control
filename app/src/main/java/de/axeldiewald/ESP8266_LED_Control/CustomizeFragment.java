@@ -16,7 +16,7 @@ import android.widget.TextView;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class Fragment2 extends Fragment implements SeekBar.OnSeekBarChangeListener {
+public class CustomizeFragment extends Fragment implements SeekBar.OnSeekBarChangeListener {
 
     // declare buttons,TextViews and SeekBars
     private Button ButtonSend, ButtonSave;
@@ -26,7 +26,7 @@ public class Fragment2 extends Fragment implements SeekBar.OnSeekBarChangeListen
     // declare Settings
     SharedPreferences sharedPreferences;
 
-    public Fragment2() {
+    public CustomizeFragment() {
         // Required empty public constructor
     }
 
@@ -34,7 +34,7 @@ public class Fragment2 extends Fragment implements SeekBar.OnSeekBarChangeListen
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_2, container, false);
+        View view = inflater.inflate(R.layout.fragment_customize, container, false);
         // Get Settings
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
         // assign buttons & OnClickListener
@@ -80,12 +80,10 @@ public class Fragment2 extends Fragment implements SeekBar.OnSeekBarChangeListen
 
     @Override
     public void onStopTrackingTouch(SeekBar seekBar) {
-        // TODO Auto-generated method stub
     }
 
     @Override
     public void onStartTrackingTouch(SeekBar seekBar) {
-        // TODO Auto-generated method stub
     }
 
     @Override
