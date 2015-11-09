@@ -1,10 +1,8 @@
-package de.axeldiewald.ESP8266_LED_Control;
+package de.axeldiewald.ESP8266_LED_Control.fragment;
 
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.app.Fragment;
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -13,10 +11,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
+import de.axeldiewald.ESP8266_LED_Control.ColorBundle;
+import de.axeldiewald.ESP8266_LED_Control.R;
 import de.axeldiewald.ESP8266_LED_Control.adapter.GridViewAdapter;
 
 public class FavouriteFragment extends Fragment {
@@ -50,12 +49,6 @@ public class FavouriteFragment extends Fragment {
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v,
                                     ContextMenu.ContextMenuInfo menuInfo) {
-       /*if (v.getId() == R.id.favouritegridview){
-            GridView gv = (GridView) v;
-            AdapterView.AdapterContextMenuInfo acmi = (AdapterView.AdapterContextMenuInfo) menuInfo;
-            GridViewAdapter gva = (GridViewAdapter) gv.getAdapter();
-            ColorBundle colorBundleInst = (ColorBundle) gv.getItemAtPosition(acmi.position);
-        }*/
         super.onCreateContextMenu(menu, v, menuInfo);
         AdapterView.AdapterContextMenuInfo acmi = (AdapterView.AdapterContextMenuInfo) menuInfo;
         ColorBundle colorBundleInst = (ColorBundle) gridViewAdapter.getItem(acmi.position);

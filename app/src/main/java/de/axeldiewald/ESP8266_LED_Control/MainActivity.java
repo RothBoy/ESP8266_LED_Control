@@ -3,16 +3,24 @@ package de.axeldiewald.ESP8266_LED_Control;
 import android.app.ActionBar;
 import android.app.DialogFragment;
 import android.app.FragmentTransaction;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
+import de.axeldiewald.ESP8266_LED_Control.SQLite.mySQLHelper;
 import de.axeldiewald.ESP8266_LED_Control.adapter.TabsPagerAdapter;
+import de.axeldiewald.ESP8266_LED_Control.fragment.FavouriteFragment;
+import de.axeldiewald.ESP8266_LED_Control.fragment.SaveFavouriteDialogFragment;
 
 public class MainActivity extends FragmentActivity implements ActionBar.TabListener, SaveFavouriteDialogFragment.SaveFavouriteDialogListener {
 
@@ -24,9 +32,9 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
     private String[] tabs = { "Favourites", "Customize"};
     // declare Settings
     SharedPreferences sharedPreferences;
+    // declare SQLite Database
+    mySQLHelper myDBHelper;
 
-    // TODO Save Favourites for reopening the App
-    // TODO Add option to delete Favourites
     // TODO Check capability of landscape mode
 
 
@@ -71,6 +79,8 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 
         // load Settings
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        // create Writable Database
+        myDBHelper = new mySQLHelper(this);
     }
 
     @Override
@@ -115,11 +125,24 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
         FavouriteFragment favouriteFragment = (FavouriteFragment) mAdapter.getItem(0);
         // add Button to FavouriteFragment
         favouriteFragment.addFavouriteButton(colorBundleInst);
+        // add to SQL Database
+        long id = myDBHelper.createRecord(colorBundleInst.getName(),
+                colorBundleInst.redValue, colorBundleInst.greenValue, colorBundleInst.blueValue);
+        colorBundleInst.setId((int) id);
+        // Toast as Confirmation
+        Toast.makeText(this, "Saved as Favourite", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onDialogNegativeClick(DialogFragment dialog) {
         // User touched the dialog's negative button
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        myDBHelper.close();
+        Log.w(mySQLHelper.class.getName(), "Database has been closed");
     }
 
 }

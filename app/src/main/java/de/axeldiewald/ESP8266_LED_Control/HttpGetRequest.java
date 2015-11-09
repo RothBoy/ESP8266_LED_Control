@@ -33,7 +33,6 @@ public class HttpGetRequest extends AsyncTask<Void, Void, Void> {
         this.context = context;
         // Get Settings
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext());
-
         alertDialog = new AlertDialog.Builder(this.context)
                 .setTitle("HTTP Response From IP Address:")
                 .setCancelable(true)

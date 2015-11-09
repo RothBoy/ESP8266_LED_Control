@@ -5,8 +5,8 @@ package de.axeldiewald.ESP8266_LED_Control.adapter;
  */
 
 
-import de.axeldiewald.ESP8266_LED_Control.FavouriteFragment;
-import de.axeldiewald.ESP8266_LED_Control.CustomizeFragment;
+import de.axeldiewald.ESP8266_LED_Control.fragment.FavouriteFragment;
+import de.axeldiewald.ESP8266_LED_Control.fragment.CustomizeFragment;
 
 import android.app.Fragment;
 import android.app.FragmentManager;

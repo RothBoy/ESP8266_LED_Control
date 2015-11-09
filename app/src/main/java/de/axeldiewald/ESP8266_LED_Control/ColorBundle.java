@@ -58,6 +58,14 @@ public class ColorBundle {
         return name;
     }
 
+    public void setId(int pid){
+        id = pid;
+    }
+
+    public int getId(){
+        return id;
+    }
+
     public View.OnClickListener clickListener = new View.OnClickListener(){
         public void onClick(View v) {
             SendToLedStrip();

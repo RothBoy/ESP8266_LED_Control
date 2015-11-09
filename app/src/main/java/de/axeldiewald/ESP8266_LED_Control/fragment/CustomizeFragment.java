@@ -1,4 +1,4 @@
-package de.axeldiewald.ESP8266_LED_Control;
+package de.axeldiewald.ESP8266_LED_Control.fragment;
 
 
 import android.content.SharedPreferences;
@@ -11,6 +11,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.TextView;
+
+import de.axeldiewald.ESP8266_LED_Control.ColorBundle;
+import de.axeldiewald.ESP8266_LED_Control.R;
 
 
 /**

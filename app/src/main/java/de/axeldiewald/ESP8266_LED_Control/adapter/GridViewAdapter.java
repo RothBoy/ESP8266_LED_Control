@@ -1,6 +1,7 @@
 package de.axeldiewald.ESP8266_LED_Control.adapter;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +15,8 @@ import java.util.List;
 import de.axeldiewald.ESP8266_LED_Control.ColorBundle;
 import de.axeldiewald.ESP8266_LED_Control.FavouriteButtonView;
 import de.axeldiewald.ESP8266_LED_Control.R;
+import de.axeldiewald.ESP8266_LED_Control.SQLite.mySQLHelper;
+import de.axeldiewald.ESP8266_LED_Control.fragment.FavouriteFragment;
 
 /**
  * Created by Axel on 28.08.2015.
@@ -23,23 +26,27 @@ public class GridViewAdapter<ColorBundleClass> extends ArrayAdapter<ColorBundle>
     private LayoutInflater mInflater;
     private int mResource;
     List<ColorBundle> items = new ArrayList<>();
+    mySQLHelper myDBHelper;
 
     public GridViewAdapter(Context context, int layoutResourceId, List<ColorBundle> objects) {
         super(context, layoutResourceId, objects);
         mInflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         mResource = R.layout.button_favourite;
         items = objects;
+        // restore saved Favourites from SQL Database
+        myDBHelper = new mySQLHelper(getContext());
+        restoreFavs();
     }
 
     public void addButton(ColorBundle colorBundle){
         items.add(colorBundle);
         notifyDataSetChanged();
-        Toast.makeText(getContext(), "Saved as Favourite", Toast.LENGTH_SHORT).show();
     }
 
     public void removeButton(ColorBundle colorBundle){
         items.remove(colorBundle);
         notifyDataSetChanged();
+        myDBHelper.deleteRecord(colorBundle.getId());
         Toast.makeText(getContext(), "Favourite deleted", Toast.LENGTH_SHORT).show();
     }
 
@@ -56,5 +63,20 @@ public class GridViewAdapter<ColorBundleClass> extends ArrayAdapter<ColorBundle>
         button.setOnClickListener(colorBundleInst.clickListener);
         button.setLongClickable(true);
         return convertView;
+    }
+
+    public void restoreFavs(){
+        Cursor cursor = myDBHelper.getAllRecords();
+        if (cursor != null  && cursor.getCount() > 0 && cursor.moveToFirst()) {
+            do {
+                // create new ColorBundle with data from SQL Database
+                ColorBundle restoredColorBundle = new ColorBundle(getContext(),
+                        cursor.getInt(2), cursor.getInt(3), cursor.getInt(4));
+                restoredColorBundle.setName(cursor.getString(1).trim());
+                restoredColorBundle.setId(cursor.getInt(0));
+                // add Button to GridView
+                this.addButton(restoredColorBundle);
+            } while (cursor.moveToNext());
+        }
     }
 }

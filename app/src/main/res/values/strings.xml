@@ -11,4 +11,7 @@
     <string name="title_activity_settings">SettingsActivity</string>
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="savedFavouritesPrefs">R.xml.savedfavourites</string>
+    <string name="FavouritesDatabase">FavouritesDatabase</string>
 </resources>

@@ -1,4 +1,4 @@
-package de.axeldiewald.ESP8266_LED_Control;
+package de.axeldiewald.ESP8266_LED_Control.unused;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -18,6 +18,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URI;
 import java.net.URISyntaxException;
+
+import de.axeldiewald.ESP8266_LED_Control.SettingsActivity;
 
 public class HttpRequestAsyncTask extends AsyncTask<Void, Void, Void> {
 
