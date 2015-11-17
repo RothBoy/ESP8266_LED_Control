@@ -16,7 +16,6 @@ import de.axeldiewald.ESP8266_LED_Control.ColorBundle;
 import de.axeldiewald.ESP8266_LED_Control.FavouriteButtonView;
 import de.axeldiewald.ESP8266_LED_Control.R;
 import de.axeldiewald.ESP8266_LED_Control.SQLite.mySQLHelper;
-import de.axeldiewald.ESP8266_LED_Control.fragment.FavouriteFragment;
 
 /**
  * Created by Axel on 28.08.2015.
@@ -35,7 +34,7 @@ public class GridViewAdapter<ColorBundleClass> extends ArrayAdapter<ColorBundle>
         items = objects;
         // restore saved Favourites from SQL Database
         myDBHelper = new mySQLHelper(getContext());
-        restoreFavs();
+        restoreFavourites();
     }
 
     public void addButton(ColorBundle colorBundle){
@@ -65,7 +64,7 @@ public class GridViewAdapter<ColorBundleClass> extends ArrayAdapter<ColorBundle>
         return convertView;
     }
 
-    public void restoreFavs(){
+    public void restoreFavourites(){
         Cursor cursor = myDBHelper.getAllRecords();
         if (cursor != null  && cursor.getCount() > 0 && cursor.moveToFirst()) {
             do {
