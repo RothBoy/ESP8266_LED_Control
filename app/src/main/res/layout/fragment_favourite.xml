@@ -1,4 +1,4 @@
-<RelativeLayout
+<LinearLayout
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical"
@@ -17,12 +17,18 @@
     <GridView xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/favouritegridview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
         android:paddingTop="10dp"
         android:numColumns="3"
         android:verticalSpacing="10dp"
         android:horizontalSpacing="10dp"
         android:stretchMode="columnWidth"
         android:gravity="center"
-        android:layout_below="@id/favouritetext" />
-</RelativeLayout>
+        android:layout_weight=".99"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/buttonTurnOff"
+        android:text="Turn off" />
+</LinearLayout>

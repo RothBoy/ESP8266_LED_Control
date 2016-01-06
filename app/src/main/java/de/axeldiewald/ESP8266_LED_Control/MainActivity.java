@@ -1,14 +1,12 @@
 package de.axeldiewald.ESP8266_LED_Control;
 
-import android.app.ActionBar;
 import android.app.DialogFragment;
-import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -19,14 +17,15 @@ import de.axeldiewald.ESP8266_LED_Control.adapter.TabsPagerAdapter;
 import de.axeldiewald.ESP8266_LED_Control.fragment.FavouriteFragment;
 import de.axeldiewald.ESP8266_LED_Control.fragment.SaveFavouriteDialogFragment;
 
-public class MainActivity extends FragmentActivity implements ActionBar.TabListener, SaveFavouriteDialogFragment.SaveFavouriteDialogListener {
+// TODO Special Effects (z.B. Strobe-Mode o.ä.)
+
+public class MainActivity extends AppCompatActivity implements SaveFavouriteDialogFragment.SaveFavouriteDialogListener {
 
     // declare Handles
-    private ViewPager viewPager;
     private TabsPagerAdapter mAdapter;
-    private ActionBar actionBar;
+    SlidingTabLayout tabLayout;
     // Tab titles
-    private String[] tabs = { "Favourites", "Customize"};
+    private String[] tabs = {"Customize", "Favourites", "Extra"};
     // declare Settings
     SharedPreferences sharedPreferences;
     // declare SQLite Database
@@ -37,40 +36,16 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ViewPager viewPager;
 
         // Handle Initialisation
-        viewPager = (ViewPager) findViewById(R.id.pager);
-        actionBar = getActionBar();
-        actionBar.setDisplayShowHomeEnabled(true);
-        mAdapter = new TabsPagerAdapter(getFragmentManager());
-
+        viewPager = (ViewPager) findViewById(R.id.viewpager);
+        mAdapter = new TabsPagerAdapter(getFragmentManager(), tabs, tabs.length);
         viewPager.setAdapter(mAdapter);
-        //actionBar.setHomeButtonEnabled(false);
-        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-
-        // Adding Tabs
-        for (String tab_name : tabs) {
-            actionBar.addTab(actionBar.newTab().setText(tab_name)
-                    .setTabListener(this));
-        }
-
-        // on swiping the viewpager make respective tab selected
-        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-
-            @Override
-            public void onPageSelected(int position) {
-                // on changing the page make respected tab selected
-                actionBar.setSelectedNavigationItem(position);
-            }
-
-            @Override
-            public void onPageScrolled(int arg0, float arg1, int arg2) {
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int arg0) {
-            }
-        });
+        tabLayout = (SlidingTabLayout) findViewById(R.id.sliding_tabs);
+        tabLayout.setDistributeEvenly(true);
+        tabLayout.setViewPager(viewPager);
+        viewPager.setCurrentItem(1); // set starting Page
 
         // load Settings
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
@@ -98,26 +73,11 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
         }
     }
 
-    @Override
-    public void onTabSelected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
-        // When the given tab is selected, switch to the corresponding page in
-        // the ViewPager.
-        viewPager.setCurrentItem(tab.getPosition());
-    }
-
-    @Override
-    public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
-    }
-
-    @Override
-    public void onTabReselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
-    }
-
 
     @Override
     public void onDialogPositiveClick(DialogFragment dialog, ColorBundle colorBundleInst) {
         // get Instance of FavouriteFragment
-        FavouriteFragment favouriteFragment = (FavouriteFragment) mAdapter.getItem(0);
+        FavouriteFragment favouriteFragment = (FavouriteFragment) mAdapter.getItem(1);
         // add Button to FavouriteFragment
         favouriteFragment.addFavouriteButton(colorBundleInst);
         // add to SQL Database

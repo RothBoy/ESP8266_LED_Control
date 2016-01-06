@@ -15,9 +15,6 @@ import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-/**
- * Created by Axel on 01.09.2015.
- */
 public class HttpGetRequest extends AsyncTask<Void, Void, Void> {
 
     // declare variables needed
@@ -34,7 +31,7 @@ public class HttpGetRequest extends AsyncTask<Void, Void, Void> {
         // Get Settings
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext());
         alertDialog = new AlertDialog.Builder(this.context)
-                .setTitle("HTTP Response From IP Address:")
+                .setTitle("Sending Data")
                 .setCancelable(true)
                 .create();
 

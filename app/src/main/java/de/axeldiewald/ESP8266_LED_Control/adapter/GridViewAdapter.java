@@ -3,6 +3,7 @@ package de.axeldiewald.ESP8266_LED_Control.adapter;
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Color;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,7 +35,9 @@ public class GridViewAdapter<ColorBundleClass> extends ArrayAdapter<ColorBundle>
         items = objects;
         // restore saved Favourites from SQL Database
         myDBHelper = new mySQLHelper(getContext());
+        // TODO FavouriteFragment restored alle Favourites wenn der User mehr als 1 Screen sich vom FavouriteFragment bewegt --> restoreFraments verlegen!
         restoreFavourites();
+        Log.d("RESTORE", "Just RESTORED all Favourites");
     }
 
     public void addButton(ColorBundle colorBundle){

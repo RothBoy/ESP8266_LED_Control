@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.GridView;
 
 import java.util.ArrayList;
@@ -25,6 +26,7 @@ public class FavouriteFragment extends Fragment {
     private static ArrayList<ColorBundle> myList = new ArrayList<>();
     private static final int MENU_CONTEXT_DELETE_ID = 0;
 
+
     public FavouriteFragment() {
         // Required empty public constructor
     }
@@ -32,6 +34,7 @@ public class FavouriteFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        Button ButtonTurnOff;
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_favourite, container, false);
         gridView = (GridView) view.findViewById(R.id.favouritegridview);
@@ -39,8 +42,17 @@ public class FavouriteFragment extends Fragment {
         gridView.setAdapter(gridViewAdapter);
         // register the GridView for ContextMenu
         registerForContextMenu(gridView);
+        ButtonTurnOff = (Button) view.findViewById(R.id.buttonTurnOff);
+        ButtonTurnOff.setOnClickListener(buttonTurnOffClickHandler);
         return view;
     }
+
+    View.OnClickListener buttonTurnOffClickHandler = new View.OnClickListener() {
+        public void onClick(View view) {
+            ColorBundle colorBundleInst = new ColorBundle(view.getContext(), 0, 0, 0);
+            colorBundleInst.SendToLedStrip();
+        }
+    };
 
     public void addFavouriteButton(final ColorBundle colorBundleInst) {
         gridViewAdapter.addButton(colorBundleInst);
