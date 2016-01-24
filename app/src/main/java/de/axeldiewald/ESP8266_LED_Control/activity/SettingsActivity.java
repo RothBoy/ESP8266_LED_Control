@@ -1,9 +1,11 @@
-package de.axeldiewald.ESP8266_LED_Control;
+package de.axeldiewald.ESP8266_LED_Control.activity;
 
 import android.app.Activity;
 import android.os.Bundle;
 import android.preference.PreferenceFragment;
 import android.view.MenuItem;
+
+import de.axeldiewald.ESP8266_LED_Control.R;
 
 
 public class SettingsActivity extends Activity {

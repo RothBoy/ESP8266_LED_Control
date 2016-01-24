@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
@@ -7,12 +8,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:padding="10dp">
 
-
-    <GridView xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/favouritegridview"
+    <ListView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/alarmlistview"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:numColumns="3"
         android:verticalSpacing="10dp"
         android:horizontalSpacing="10dp"
         android:stretchMode="columnWidth"
@@ -22,6 +21,13 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/buttonTurnOff"
-        android:text="Turn off" />
+        android:id="@+id/buttonNewAlarm"
+        android:text="New Alarm" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/buttonSetAlarm"
+        android:text="Unset Alarm" />
+
 </LinearLayout>

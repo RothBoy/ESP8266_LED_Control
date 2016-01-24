@@ -4,9 +4,6 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.Button;
 
-/**
- * Created by Axel on 01.09.2015.
- */
 public class FavouriteButtonView extends Button {
 
     public FavouriteButtonView(Context context) {

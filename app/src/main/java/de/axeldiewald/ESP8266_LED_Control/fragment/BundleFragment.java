@@ -1,10 +1,9 @@
 package de.axeldiewald.ESP8266_LED_Control.fragment;
 
-
+import android.app.Fragment;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.app.Fragment;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -12,36 +11,47 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.GridView;
+import android.widget.ListView;
 
 import java.util.ArrayList;
 
-import de.axeldiewald.ESP8266_LED_Control.SQLite.mySQLHelper;
-import de.axeldiewald.ESP8266_LED_Control.bundle.ColorBundle;
 import de.axeldiewald.ESP8266_LED_Control.R;
-import de.axeldiewald.ESP8266_LED_Control.adapter.GridViewAdapter;
+import de.axeldiewald.ESP8266_LED_Control.SQLite.mySQLHelper;
+import de.axeldiewald.ESP8266_LED_Control.adapter.ViewAdapter;
+import de.axeldiewald.ESP8266_LED_Control.bundle.ColorBundle;
+import de.axeldiewald.ESP8266_LED_Control.bundle.ParentBundle;
 
-public class FavouriteFragment extends Fragment {
+public class BundleFragment extends Fragment {
 
-    private static GridView gridView;
-    private static GridViewAdapter gridViewAdapter;
-    private static ArrayList<ColorBundle> favouriteList = new ArrayList<>();
-    private static mySQLHelper myDBHelper;
-    private static final int MENU_CONTEXT_DELETE_ID = 0;
-    private static final int FRAGMENT_GROUP_ID = 1;
+    public GridView gridView;
+    public ListView listView;
+    public AbsListView absListView;
+    public ViewAdapter viewAdapter;
+    public ArrayList<ParentBundle> list = new ArrayList<>();
+    public mySQLHelper myDBHelper;
+    public final int MENU_CONTEXT_DELETE_ID = 0;
+    public int FRAGMENT_GROUP_ID = 1;
+    public int fragmentLayoutResource;
+    public int buttonResource;
+    public int buttonId;
+    public String TABLE_NAME;
+    public String BUNDLE_CLASSNAME;
+    public String[] BUNDLE_VALUE_NAME;
 
 
-    public FavouriteFragment() {
+    public BundleFragment() {
         // Required empty public constructor
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        gridViewAdapter = new GridViewAdapter(getActivity(), favouriteList);
-        restoreFavouriteButtons();
+        viewAdapter = new ViewAdapter(getActivity(), buttonResource, buttonId, list);
+        restoreButtons();
     }
 
     @Override
@@ -49,11 +59,11 @@ public class FavouriteFragment extends Fragment {
                              Bundle savedInstanceState) {
         Button ButtonTurnOff;
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_favourite, container, false);
-        gridView = (GridView) view.findViewById(R.id.favouritegridview);
-        gridView.setAdapter(gridViewAdapter);
+        View view = inflater.inflate(fragmentLayoutResource, container, false);
+        absListView = (AbsListView)view.findViewById(R.id.favouritegridview);
+        absListView.setAdapter(viewAdapter);
         // register the GridView for ContextMenu
-        registerForContextMenu(gridView);
+        registerForContextMenu(absListView);
         ButtonTurnOff = (Button) view.findViewById(R.id.buttonTurnOff);
         ButtonTurnOff.setOnClickListener(buttonTurnOffClickHandler);
         return view;
@@ -70,18 +80,17 @@ public class FavouriteFragment extends Fragment {
         }
     };
 
-    public void addFavouriteButton(final ColorBundle colorBundleInst) {
-        gridViewAdapter.addButton(colorBundleInst);
+    public void addButton(final ParentBundle parentBundleInst) {
+        viewAdapter.addButton(parentBundleInst);
         // add to SQL Database
-        long id = myDBHelper.createRecord("FavouritesTable",
-                new String[]{"redValue", "greenValue", "blueValue"},
-                colorBundleInst.getName(), colorBundleInst.arg);
-        colorBundleInst.setId((int) id);
+        long id = myDBHelper.createRecord(TABLE_NAME, BUNDLE_VALUE_NAME,
+                parentBundleInst.getName(), parentBundleInst.arg);
+        parentBundleInst.setId((int) id);
     }
 
-    public void restoreFavouriteButtons(){
-        Cursor cursor = myDBHelper.getAllRecords("Favourite");
-        gridViewAdapter.restoreBundles(cursor);
+    public void restoreButtons(){
+        Cursor cursor = myDBHelper.getAllRecords(BUNDLE_CLASSNAME);
+        viewAdapter.restoreBundles(cursor);
         Log.w("RESTORED", "Bundles have been restored");
     }
 
@@ -90,8 +99,8 @@ public class FavouriteFragment extends Fragment {
                                     ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
         AdapterView.AdapterContextMenuInfo acmi = (AdapterView.AdapterContextMenuInfo) menuInfo;
-        ColorBundle colorBundleInst = (ColorBundle) gridViewAdapter.getItem(acmi.position);
-        String title = colorBundleInst.getName();
+        ParentBundle parentBundleInst = (ParentBundle) viewAdapter.getItem(acmi.position);
+        String title = parentBundleInst.getName();
         menu.setHeaderTitle(title);
         menu.add(FRAGMENT_GROUP_ID, MENU_CONTEXT_DELETE_ID, Menu.NONE, "Delete");
     }
@@ -103,10 +112,10 @@ public class FavouriteFragment extends Fragment {
                 case MENU_CONTEXT_DELETE_ID:
                     AdapterView.AdapterContextMenuInfo acmi =
                             (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-                    ColorBundle colorBundleInst = (ColorBundle) gridViewAdapter.getItem(acmi.position);
-                    gridViewAdapter.removeButton(colorBundleInst);
+                    ParentBundle parentBundleInst = (ParentBundle) viewAdapter.getItem(acmi.position);
+                    viewAdapter.removeButton(parentBundleInst);
                     // delete from SQL Database
-                    myDBHelper.deleteRecord("FavouritesTable", colorBundleInst.getId());
+                    myDBHelper.deleteRecord(TABLE_NAME, parentBundleInst.getId());
                     return true;
                 default:
                     return super.onContextItemSelected(item);

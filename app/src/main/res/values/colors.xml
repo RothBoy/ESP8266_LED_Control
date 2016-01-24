@@ -9,4 +9,5 @@
     <color name="secondary_text_material_light">#aeaeae</color>
     <color name="foreground_material_dark">#282828</color>
     <color name="colorBackground">#282828</color>
+    <color name="colorAlarmSet">#19edff</color>
 </resources>

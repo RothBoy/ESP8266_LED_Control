@@ -1,7 +1,7 @@
 package de.axeldiewald.ESP8266_LED_Control.adapter;
 
 
-import de.axeldiewald.ESP8266_LED_Control.fragment.ExtraFragment;
+import de.axeldiewald.ESP8266_LED_Control.fragment.AlarmFragment;
 import de.axeldiewald.ESP8266_LED_Control.fragment.FavouriteFragment;
 import de.axeldiewald.ESP8266_LED_Control.fragment.CustomizeFragment;
 
@@ -37,12 +37,9 @@ public class TabsPagerAdapter extends FragmentPagerAdapter {
                 return new FavouriteFragment();
             case 2:
                 // Customize fragment activity
-                return new ExtraFragment();
+                return new AlarmFragment();
         }
-
         return null;
-
-
     }
 
     // This method return the titles for the Tabs in the Tab Strip

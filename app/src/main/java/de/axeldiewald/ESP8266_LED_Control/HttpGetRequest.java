@@ -15,17 +15,20 @@ import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import de.axeldiewald.ESP8266_LED_Control.activity.SettingsActivity;
+
 public class HttpGetRequest extends AsyncTask<Void, Void, Void> {
 
     // declare variables needed
     private String requestReply,ipAddress, portNumber;
     private Context context;
     private AlertDialog alertDialog;
-    private String redValue, greenValue, blueValue;
+    private int[] values;
+    private String path;
     // Declare Settings
     SharedPreferences sharedPreferences;
 
-    public HttpGetRequest(Context context, String param_redValue, String param_greenValue, String param_blueValue)
+    public HttpGetRequest(Context context, int[] pArgs, String pPath)
     {
         this.context = context;
         // Get Settings
@@ -39,9 +42,8 @@ public class HttpGetRequest extends AsyncTask<Void, Void, Void> {
         ipAddress = sharedPreferences.getString(SettingsActivity.PREF_IP, "");
         portNumber = sharedPreferences.getString(SettingsActivity.PREF_PORT, "");
 
-        redValue = param_redValue;
-        greenValue = param_greenValue;
-        blueValue = param_blueValue;
+        values = pArgs;
+        path = pPath;
     }
 
     /**
@@ -58,7 +60,7 @@ public class HttpGetRequest extends AsyncTask<Void, Void, Void> {
             alertDialog.show();
         }
         try {
-            requestReply = sendRequest(redValue, greenValue, blueValue, ipAddress, portNumber);
+            requestReply = sendRequest();
         } catch (IOException e) {
             System.out.println("Unable to retrieve web page. URL may be invalid."+"Error: " + e.getMessage());
             e.printStackTrace();
@@ -96,13 +98,21 @@ public class HttpGetRequest extends AsyncTask<Void, Void, Void> {
         }
     }
 
-    public String sendRequest(String redValue, String greenValue, String blueValue,
-                              String ipAddress, String portNumber) throws IOException {
+    public String sendRequest() throws IOException {
         InputStream is = null;
         // Only display the first 500 characters of the retrieved
         // web page content.
         int len = 500;
-        String myUrl = "http://" + ipAddress + ":" + portNumber + "/?field1=" + redValue + "&field2=" + greenValue + "&field3=" + blueValue;
+        // Build the URL
+        int i = 1;
+        String myUrl = "http://" + ipAddress + "/" + path + "/?";
+        for (int value: values){
+            myUrl += "value" + String.valueOf(i) + "=" + String.valueOf(value).trim();
+            if (i != values.length){
+                myUrl += "&";
+            }
+            i++;
+        }
 
         try {
             URL url = new URL(myUrl);

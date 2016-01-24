@@ -12,7 +12,7 @@ import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import de.axeldiewald.ESP8266_LED_Control.ColorBundle;
+import de.axeldiewald.ESP8266_LED_Control.bundle.ColorBundle;
 import de.axeldiewald.ESP8266_LED_Control.R;
 
 
@@ -22,7 +22,6 @@ import de.axeldiewald.ESP8266_LED_Control.R;
 public class CustomizeFragment extends Fragment implements SeekBar.OnSeekBarChangeListener {
 
     // declare buttons,TextViews and SeekBars
-    private Button ButtonSend, ButtonSave;
     private TextView textViewRedValue, textViewGreenValue, textViewBlueValue;
     private SeekBar seekBarRed, seekBarGreen, seekBarBlue;
     private TextView spaceColor;
@@ -36,6 +35,7 @@ public class CustomizeFragment extends Fragment implements SeekBar.OnSeekBarChan
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        Button ButtonSend, ButtonSave;
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_customize, container, false);
         // Get Settings
