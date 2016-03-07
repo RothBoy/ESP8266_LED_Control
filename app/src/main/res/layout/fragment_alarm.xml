@@ -27,7 +27,13 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/buttonSetAlarm"
+        android:id="@+id/buttonUnsetAlarm"
         android:text="Unset Alarm" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/buttonStopAlarm"
+        android:text="Stop Alarm" />
 
 </LinearLayout>

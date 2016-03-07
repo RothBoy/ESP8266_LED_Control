@@ -31,11 +31,13 @@ public class NewAlarmDialogFragment extends DialogFragment {
                 .setMessage("New Alarm")
                 .setPositiveButton("Save", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        AlarmBundle alarmBundleInst = new AlarmBundle(view.getContext(), TimePickerAlarm.getHour(), TimePickerAlarm.getMinute(), 0);
+                        AlarmBundle alarmBundleInst = new AlarmBundle(view.getContext(),
+                                TimePickerAlarm.getHour(), TimePickerAlarm.getMinute(), 0);
                         alarmBundleInst.setName(alarmName.getText().toString().trim()
-                                + "   " + String.valueOf(TimePickerAlarm.getHour()).trim()
-                                + ":"  + String.valueOf(TimePickerAlarm.getMinute()).trim());
-                        mListener.onNewAlarmDialogPositiveClick(NewAlarmDialogFragment.this, alarmBundleInst);
+                                + "   " + timeToString(TimePickerAlarm.getHour())
+                                + ":"  + timeToString(TimePickerAlarm.getMinute()));
+                        mListener.onNewAlarmDialogPositiveClick(NewAlarmDialogFragment.this,
+                                alarmBundleInst);
                     }
                 })
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -63,8 +65,11 @@ public class NewAlarmDialogFragment extends DialogFragment {
         }
     }
 
-    public void setAlarmBundle(AlarmBundle alarmBundle){
-
+    private String timeToString(int time) {
+        if (time < 10) {
+            return "0" + String.valueOf(time);
+        }
+        return String.valueOf(time);
     }
 
 }

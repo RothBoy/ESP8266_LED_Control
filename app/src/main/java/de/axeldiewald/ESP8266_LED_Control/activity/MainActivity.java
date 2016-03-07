@@ -10,7 +10,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import java.util.Arrays;
 
@@ -21,18 +20,17 @@ import de.axeldiewald.ESP8266_LED_Control.adapter.TabsPagerAdapter;
 import de.axeldiewald.ESP8266_LED_Control.bundle.AlarmBundle;
 import de.axeldiewald.ESP8266_LED_Control.bundle.ColorBundle;
 import de.axeldiewald.ESP8266_LED_Control.fragment.AlarmFragment;
+import de.axeldiewald.ESP8266_LED_Control.fragment.BundleFragment;
 import de.axeldiewald.ESP8266_LED_Control.fragment.FavouriteFragment;
 import de.axeldiewald.ESP8266_LED_Control.fragment.NewAlarmDialogFragment;
 import de.axeldiewald.ESP8266_LED_Control.fragment.SaveFavouriteDialogFragment;
 
-// TODO Parent Classes for Fragments, DialogFragments
+// TODO Parent Classes for DialogFragments
 
 public class MainActivity extends AppCompatActivity implements
         SaveFavouriteDialogFragment.SaveFavouriteDialogListener,
         NewAlarmDialogFragment.NewAlarmDialogListener{
 
-    // declare Handles
-    private TabsPagerAdapter tabsPagerAdapter;
     SlidingTabLayout tabLayout;
     // Tab titles
     private String[] tabs = {"Customize", "Favourites", "Alarms"};
@@ -50,6 +48,7 @@ public class MainActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ViewPager viewPager;
+        TabsPagerAdapter tabsPagerAdapter;
 
         // Tabs Initialisation
         viewPager = (ViewPager) findViewById(R.id.viewpager);
@@ -63,13 +62,15 @@ public class MainActivity extends AppCompatActivity implements
         // load Settings
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
+        // get instances of Fragments
+        favouriteFragment = (FavouriteFragment)
+                tabsPagerAdapter.getItem(Arrays.asList(tabs).indexOf("Favourites"));
+        alarmFragment = (AlarmFragment)
+                tabsPagerAdapter.getItem(Arrays.asList(tabs).indexOf("Alarms"));
+
         // SQLite Initialisation
-        favouriteFragment = (FavouriteFragment) tabsPagerAdapter.getItem(Arrays.asList(tabs).indexOf("Favourites"));
-        alarmFragment = (AlarmFragment) tabsPagerAdapter.getItem(Arrays.asList(tabs).indexOf("Alarms"));
-        myDBHelper = new mySQLHelper(this, new String[] {"redValue", "greenValue", "blueValue"},
-                new String[] {"hour", "minute", "second"});
-        favouriteFragment.setSQLHelper(myDBHelper);
-        alarmFragment.setSQLHelper(myDBHelper);
+        myDBHelper = new mySQLHelper(this);
+        BundleFragment.setSQLHelper(myDBHelper);
     }
 
     @Override
@@ -95,10 +96,8 @@ public class MainActivity extends AppCompatActivity implements
 
     @Override
     public void onSaveFavouriteDialogPositiveClick(DialogFragment dialog, ColorBundle colorBundleInst) {
-        // get Instance of FavouriteFragment
-        FavouriteFragment favouriteFragment = (FavouriteFragment) tabsPagerAdapter.getItem(Arrays.asList(tabs).indexOf("Favourites"));
         // add Button to FavouriteFragment
-        favouriteFragment.addFavouriteButton(colorBundleInst);
+        favouriteFragment.addButton(colorBundleInst);
     }
 
     @Override
@@ -108,10 +107,8 @@ public class MainActivity extends AppCompatActivity implements
 
     @Override
     public void onNewAlarmDialogPositiveClick(DialogFragment dialog, AlarmBundle alarmBundleInst){
-        // get Instance of FavouriteFragment
-        AlarmFragment alarmFragment = (AlarmFragment) tabsPagerAdapter.getItem(Arrays.asList(tabs).indexOf("Alarms"));
-        // add Button to FavouriteFragment
-        alarmFragment.addAlarmButton(alarmBundleInst);
+        // add Button to AlarmFragment
+        alarmFragment.addButton(alarmBundleInst);
     }
 
     @Override

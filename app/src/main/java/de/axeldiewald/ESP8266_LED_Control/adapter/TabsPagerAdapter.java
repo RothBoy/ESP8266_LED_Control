@@ -13,11 +13,17 @@ public class TabsPagerAdapter extends FragmentPagerAdapter {
 
     CharSequence Titles[]; // This will Store the Titles of the Tabs which are Going to be passed when ViewPagerAdapter is created
     int NumbOfTabs; // Store the number of tabs, this will also be passed when the ViewPagerAdapter is created
+    CustomizeFragment customizeFragment;
+    FavouriteFragment favouriteFragment;
+    AlarmFragment alarmFragment;
 
 
     // Build a Constructor and assign the passed Values to appropriate values in the class
     public TabsPagerAdapter(FragmentManager fm,CharSequence mTitles[], int mNumbOfTabsumb) {
         super(fm);
+        customizeFragment = new CustomizeFragment();
+        favouriteFragment = new FavouriteFragment();
+        alarmFragment = new AlarmFragment();
 
         this.Titles = mTitles;
         this.NumbOfTabs = mNumbOfTabsumb;
@@ -31,13 +37,13 @@ public class TabsPagerAdapter extends FragmentPagerAdapter {
         switch (index) {
             case 0:
                 // Customize fragment activity
-                return new CustomizeFragment();
+                return customizeFragment;
             case 1:
                 // Favourite fragment activity
-                return new FavouriteFragment();
+                return favouriteFragment;
             case 2:
                 // Customize fragment activity
-                return new AlarmFragment();
+                return alarmFragment;
         }
         return null;
     }

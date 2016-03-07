@@ -14,7 +14,8 @@
         android:layout_margin="20dp"
         android:id="@+id/spaceShowColor"
         android:layout_toLeftOf="@+id/buttonSave"
-        android:layout_alignParentLeft="true" />
+        android:layout_alignParentLeft="true"
+        android:background="#000000" />
 
     <Button
         android:layout_width="wrap_content"

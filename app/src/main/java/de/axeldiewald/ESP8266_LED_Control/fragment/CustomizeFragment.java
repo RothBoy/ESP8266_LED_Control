@@ -38,8 +38,6 @@ public class CustomizeFragment extends Fragment implements SeekBar.OnSeekBarChan
         Button ButtonSend, ButtonSave;
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_customize, container, false);
-        // Get Settings
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
         // assign buttons & OnClickListener
         ButtonSend = (Button) view.findViewById(R.id.buttonSend);
         ButtonSend.setOnClickListener(buttonSendClickHandler);

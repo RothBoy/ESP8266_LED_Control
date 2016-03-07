@@ -9,49 +9,28 @@ import android.util.Log;
 
 public class mySQLHelper extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 14;
+    private static final int DATABASE_VERSION = 16;
     private static final String DATABASE_NAME = "BundleDatabase";
     public final static String BUNDLE_ID = "_ID";
     public final static String BUNDLE_NAME = "name";
     public final static String FAVOURITE_TABLE_NAME = "FavouritesTable";
     public final static String ALARM_TABLE_NAME = "AlarmsTable";
-    public static String[] FAVOURITE_BUNDLE_VALUE_NAME;
-    public static String[] ALARM_BUNDLE_VALUE_NAME;
+    public final static String[] FAVOURITE_BUNDLE_VALUE_NAME = {"red", "green", "blue"};
+    public final static String[] ALARM_BUNDLE_VALUE_NAME = {"hour", "minute", "second"};
+    private static String FAVOURITE_TABLE_CREATE;
+    private static String ALARM_TABLE_CREATE;
 
-    private static String FAVOURITE_TABLE_CREATE = "CREATE TABLE FavouritesTable ( " +
-            BUNDLE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " +
-            BUNDLE_NAME + " TEXT NOT NULL, " +
-            "redValue INTEGER, greenValue INTEGER, blueValue INTEGER );";
-
-    private static String ALARM_TABLE_CREATE = "CREATE TABLE AlarmsTable ( " +
-            BUNDLE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " +
-            BUNDLE_NAME + " TEXT NOT NULL," +
-            "hour INTEGER, minute INTEGER, second INTEGER );";
-
-    public mySQLHelper(Context context, String[] pValueName1, String[] pValueName2) {
+    public mySQLHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
-        FAVOURITE_BUNDLE_VALUE_NAME = pValueName1;
-        ALARM_BUNDLE_VALUE_NAME = pValueName2;
-        /*FAVOURITE_TABLE_CREATE = "CREATE TABLE " + TABLE_NAME + " ( " +
-                BUNDLE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " +
-                BUNDLE_NAME + " TEXT NOT NULL, ";
-        int i = 1;
-        for (String valueName: FAVOURITE_BUNDLE_VALUE_NAME){
-            FAVOURITE_TABLE_CREATE += valueName + " INTEGER";
-                if (i != FAVOURITE_BUNDLE_VALUE_NAME.length){
-                    FAVOURITE_TABLE_CREATE += ", ";
-                }
-                i++;
-        }
-        FAVOURITE_TABLE_CREATE += ");";*/
+
+        FAVOURITE_TABLE_CREATE = createCreateCommand(FAVOURITE_TABLE_NAME, FAVOURITE_BUNDLE_VALUE_NAME);
+        ALARM_TABLE_CREATE = createCreateCommand(ALARM_TABLE_NAME, ALARM_BUNDLE_VALUE_NAME);
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(FAVOURITE_TABLE_CREATE);
         db.execSQL(ALARM_TABLE_CREATE);
-        Log.w(mySQLHelper.class.getName(),
-                "CREATING NEW TABLE!!!!!!!!!!!!!!");
     }
 
     @Override
@@ -64,24 +43,24 @@ public class mySQLHelper extends SQLiteOpenHelper {
         onCreate(database);
     }
 
-    public long createRecord(String TABLE_NAME, String[] BUNDLE_VALUE_NAME, String name,
-                             int[] pValues){
+    public long createRecord(String pTableName, String pBundleName, String[] pBundleValueName,
+                             int[] pBundleValue){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(BUNDLE_NAME, name);
+        values.put(BUNDLE_NAME, pBundleName);
         int i = 0;
-        for (String value: BUNDLE_VALUE_NAME){
-            values.put(value, pValues[i]);
+        for (String value: pBundleValueName){
+            values.put(value, pBundleValue[i]);
             i++;
         }
-        long idReturned = db.insert(TABLE_NAME, null, values);
+        long idReturned = db.insert(pTableName, null, values);
         db.close();
         return idReturned;
     }
 
-    public int deleteRecord(String TABLE_NAME, int id){
+    public int deleteRecord(String pTableName, int pBundleId){
         SQLiteDatabase db = this.getWritableDatabase();
-        int rows = db.delete(TABLE_NAME, BUNDLE_ID + "=" + String.valueOf(id), null);
+        int rows = db.delete(pTableName, BUNDLE_ID + "=" + String.valueOf(pBundleId), null);
         db.close();
         return rows;
     }
@@ -103,6 +82,22 @@ public class mySQLHelper extends SQLiteOpenHelper {
         }
         return db.query(true, pBundleClassName + "sTable",
                 cols, null, null, null, null, null, null);
+    }
+
+    public String createCreateCommand(String pTableName, String[] pBundleValueName) {
+        String tableCreateCommand = "CREATE TABLE " + pTableName + " ( " +
+                BUNDLE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " +
+                BUNDLE_NAME + " TEXT NOT NULL, ";
+        int i = 1;
+        for (String valueName: pBundleValueName){
+            tableCreateCommand += valueName + " INTEGER";
+            if (i != pBundleValueName.length){
+                tableCreateCommand += ", ";
+            }
+            i++;
+        }
+        tableCreateCommand += " );";
+        return tableCreateCommand;
     }
 
 }

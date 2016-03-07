@@ -10,5 +10,10 @@
         android:inputType="number"
         android:title="Port Number"
         android:defaultValue="80" />
+    <EditTextPreference
+        android:key="PREF_WAKE_DURATION"
+        android:inputType="number"
+        android:title="Wake Duration [min]"
+        android:defaultValue="15" />
 
 </PreferenceScreen>

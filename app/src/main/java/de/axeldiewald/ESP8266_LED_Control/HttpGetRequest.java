@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -23,6 +24,7 @@ public class HttpGetRequest extends AsyncTask<Void, Void, Void> {
     private String requestReply,ipAddress, portNumber;
     private Context context;
     private AlertDialog alertDialog;
+    private Toast toast;
     private int[] values;
     private String path;
     // Declare Settings
@@ -32,12 +34,9 @@ public class HttpGetRequest extends AsyncTask<Void, Void, Void> {
     {
         this.context = context;
         // Get Settings
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext());
-        alertDialog = new AlertDialog.Builder(this.context)
-                .setTitle("Sending Data")
-                .setCancelable(true)
-                .create();
-
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(
+                context.getApplicationContext());
+        toast = Toast.makeText(this.context, "", Toast.LENGTH_SHORT);
         // Get IP Address and Port Number
         ipAddress = sharedPreferences.getString(SettingsActivity.PREF_IP, "");
         portNumber = sharedPreferences.getString(SettingsActivity.PREF_PORT, "");
@@ -54,11 +53,8 @@ public class HttpGetRequest extends AsyncTask<Void, Void, Void> {
      */
     @Override
     protected Void doInBackground(Void... voids) {
-        alertDialog.setMessage("Data sent, waiting for reply from server...");
-        if(!alertDialog.isShowing())
-        {
-            alertDialog.show();
-        }
+        toast.setText("Data sent");
+        toast.show();
         try {
             requestReply = sendRequest();
         } catch (IOException e) {
@@ -77,11 +73,8 @@ public class HttpGetRequest extends AsyncTask<Void, Void, Void> {
      */
     @Override
     protected void onPostExecute(Void aVoid) {
-        alertDialog.setMessage(requestReply);
-        if(!alertDialog.isShowing())
-        {
-            alertDialog.show(); // show dialog
-        }
+            toast.setText(requestReply);
+            toast.show();
     }
 
     /**
@@ -91,11 +84,8 @@ public class HttpGetRequest extends AsyncTask<Void, Void, Void> {
      */
     @Override
     protected void onPreExecute() {
-        alertDialog.setMessage("Sending data to server, please wait...");
-        if(!alertDialog.isShowing())
-        {
-            alertDialog.show();
-        }
+            toast.setText("Sending Data");
+            toast.show();
     }
 
     public String sendRequest() throws IOException {

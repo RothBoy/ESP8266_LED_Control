@@ -1,78 +1,53 @@
 package de.axeldiewald.ESP8266_LED_Control.fragment;
 
-import android.app.Fragment;
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.database.Cursor;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
-import android.util.Log;
-import android.view.ContextMenu;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.GridView;
 import android.widget.ListView;
-
-import java.util.ArrayList;
-import java.util.Calendar;
-
 import de.axeldiewald.ESP8266_LED_Control.HttpGetRequest;
-import de.axeldiewald.ESP8266_LED_Control.SQLite.mySQLHelper;
-import de.axeldiewald.ESP8266_LED_Control.adapter.GridViewAdapter;
-import de.axeldiewald.ESP8266_LED_Control.adapter.ListViewAdapter;
-import de.axeldiewald.ESP8266_LED_Control.adapter.ViewAdapter;
-import de.axeldiewald.ESP8266_LED_Control.bundle.AlarmBundle;
 import de.axeldiewald.ESP8266_LED_Control.R;
-import de.axeldiewald.ESP8266_LED_Control.bundle.ColorBundle;
 
 
-public class AlarmFragment extends Fragment {
+public class AlarmFragment extends BundleFragment {
 
-    private static ListView listView;
-    private static ListViewAdapter listViewAdapter;
-    private static ArrayList<AlarmBundle> alarmList = new ArrayList<>();
-    private static mySQLHelper myDBHelper;
-    private static final int MENU_CONTEXT_DELETE_ID = 0;
-    private static final int FRAGMENT_GROUP_ID = 2;
+    public ListView listView;
+    public int fragmentLayoutResource = R.layout.fragment_alarm;
+    public int listViewId = R.id.alarmlistview;
 
     public AlarmFragment() {
-        // Required empty public constructor
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        listViewAdapter = new ListViewAdapter(getActivity(), alarmList);
-        restoreAlarmButtons();
+        super();
+        FRAGMENT_GROUP_ID = 2;
+        buttonResource = R.layout.button_alarm;
+        buttonId = R.id.buttonAlarm;
+        TABLE_NAME = "AlarmsTable";
+        BUNDLE_CLASSNAME = "Alarm";
+        BUNDLE_VALUE_NAME = new String[] {"hour", "minute", "second"};
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        Button ButtonUnsetAlarm, ButtonNewAlarm;
+        super.onCreateView(inflater, container, savedInstanceState);
+
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_alarm, container, false);
-
-        ButtonUnsetAlarm = (Button) view.findViewById(R.id.buttonSetAlarm);
-        ButtonUnsetAlarm.setOnClickListener(buttonUnsetAlarmClickHandler);
-        ButtonNewAlarm = (Button) view.findViewById(R.id.buttonNewAlarm);
-        ButtonNewAlarm.setOnClickListener(buttonNewAlarmClickHandler);
-
-        listView = (ListView) view.findViewById(R.id.alarmlistview);
-        listView.setAdapter(listViewAdapter);
+        View view = inflater.inflate(fragmentLayoutResource, container, false);
+        listView = (ListView)view.findViewById(listViewId);
+        listView.setAdapter(viewAdapter);
         // register the GridView for ContextMenu
         registerForContextMenu(listView);
 
-        return view;
-    }
+        //View view = inflater.inflate(fragmentLayoutResource, container, false);
+        Button ButtonUnsetAlarm, ButtonNewAlarm, ButtonStopAlarm;
+        ButtonUnsetAlarm = (Button) view.findViewById(R.id.buttonUnsetAlarm);
+        ButtonUnsetAlarm.setOnClickListener(buttonUnsetAlarmClickHandler);
+        ButtonNewAlarm = (Button) view.findViewById(R.id.buttonNewAlarm);
+        ButtonNewAlarm.setOnClickListener(buttonNewAlarmClickHandler);
+        ButtonStopAlarm = (Button) view.findViewById(R.id.buttonStopAlarm);
+        ButtonStopAlarm.setOnClickListener(buttonStopAlarmClickHandler);
 
-    public void setSQLHelper(mySQLHelper pDBhelper){
-        myDBHelper = pDBhelper;
+        return view;
     }
 
     View.OnClickListener buttonNewAlarmClickHandler = new View.OnClickListener() {
@@ -92,47 +67,12 @@ public class AlarmFragment extends Fragment {
         }
     };
 
-    public void addAlarmButton(final AlarmBundle alarmBundleInst) {
-        listViewAdapter.addButton(alarmBundleInst);
-        // add to SQL Database
-        long id = myDBHelper.createRecord("AlarmsTable", new String[]{"hour", "minute", "second"},
-                alarmBundleInst.getName(), alarmBundleInst.arg);
-        alarmBundleInst.setId((int) id);
-    }
-
-    public void restoreAlarmButtons(){
-        Cursor cursor = myDBHelper.getAllRecords("Alarm");
-        listViewAdapter.restoreBundles(cursor);
-        Log.w("RESTORED", "Bundles have been restored");
-    }
-
-    @Override
-    public void onCreateContextMenu(ContextMenu menu, View v,
-                                    ContextMenu.ContextMenuInfo menuInfo) {
-        super.onCreateContextMenu(menu, v, menuInfo);
-        AdapterView.AdapterContextMenuInfo acmi = (AdapterView.AdapterContextMenuInfo) menuInfo;
-        AlarmBundle alarmBundleInst = (AlarmBundle) listViewAdapter.getItem(acmi.position);
-        String title = alarmBundleInst.getName();
-        menu.setHeaderTitle(title);
-        menu.add(FRAGMENT_GROUP_ID, MENU_CONTEXT_DELETE_ID, Menu.NONE, "Delete");
-    }
-
-    @Override
-    public boolean onContextItemSelected(MenuItem item) {
-        if (item.getGroupId() == FRAGMENT_GROUP_ID) {
-            switch (item.getItemId()) {
-                case MENU_CONTEXT_DELETE_ID:
-                    AdapterView.AdapterContextMenuInfo acmi =
-                            (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-                    AlarmBundle alarmBundleInst = (AlarmBundle) listViewAdapter.getItem(acmi.position);
-                    listViewAdapter.removeButton(alarmBundleInst);
-                    // delete from SQL Database
-                    myDBHelper.deleteRecord("AlarmsTable", alarmBundleInst.getId());
-                    return true;
-                default:
-                    return super.onContextItemSelected(item);
-            }
+    View.OnClickListener buttonStopAlarmClickHandler = new View.OnClickListener() {
+        public void onClick(View view) {
+            int[] args = {};
+            String path = "stopalarm";
+            new HttpGetRequest(view.getContext(), args, path).execute();
         }
-        return super.onContextItemSelected(item);
-    }
+    };
+
 }

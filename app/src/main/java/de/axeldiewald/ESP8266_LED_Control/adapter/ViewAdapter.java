@@ -3,38 +3,30 @@ package de.axeldiewald.ESP8266_LED_Control.adapter;
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Color;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.Toast;
-
 import java.util.ArrayList;
-import java.util.List;
-import java.util.zip.Inflater;
-
-import de.axeldiewald.ESP8266_LED_Control.FavouriteButtonView;
-import de.axeldiewald.ESP8266_LED_Control.R;
-import de.axeldiewald.ESP8266_LED_Control.SQLite.mySQLHelper;
 import de.axeldiewald.ESP8266_LED_Control.bundle.AlarmBundle;
 import de.axeldiewald.ESP8266_LED_Control.bundle.ColorBundle;
 import de.axeldiewald.ESP8266_LED_Control.bundle.ParentBundle;
 
 public class ViewAdapter<ParentBundleClass> extends ArrayAdapter<ParentBundle> {
 
-    public LayoutInflater mInflater;
+    public static LayoutInflater mInflater;
     public int buttonResource;
     public int buttonId;
-    List<ParentBundle> items = new ArrayList<>();
+    ArrayList<ParentBundle> items = new ArrayList<>();
     public String BUNDLE_CLASSNAME;
 
-    public ViewAdapter(Context context, int pButtonResource, int pButtonId,
-                       List<ParentBundle> objects) {
+    public ViewAdapter(Context context, int pButtonResource, int pButtonId, String pBundleClassname,
+                       ArrayList<ParentBundle> objects) {
         super(context, pButtonResource, objects);
         buttonResource = pButtonResource;
         buttonId = pButtonId;
+        BUNDLE_CLASSNAME = pBundleClassname;
         mInflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         items = objects;
     }
@@ -42,19 +34,16 @@ public class ViewAdapter<ParentBundleClass> extends ArrayAdapter<ParentBundle> {
     public void addButton(ParentBundle parentBundle){
         items.add(parentBundle);
         notifyDataSetChanged();
-        // Toast as Confirmation
-        Toast.makeText(getContext(), "Saved as " + BUNDLE_CLASSNAME, Toast.LENGTH_SHORT).show();
     }
 
     public void removeButton(ParentBundle pParentBundle){
         items.remove(pParentBundle);
         notifyDataSetChanged();
-        Toast.makeText(getContext(), BUNDLE_CLASSNAME + " deleted", Toast.LENGTH_SHORT).show();
     }
 
 
     @Override
-    public View getView(final int position, View convertView, ViewGroup parent) {
+    public View getView(int position, View convertView, ViewGroup parent) {
         if(convertView == null){
             convertView = mInflater.inflate(buttonResource, parent, false);
         }

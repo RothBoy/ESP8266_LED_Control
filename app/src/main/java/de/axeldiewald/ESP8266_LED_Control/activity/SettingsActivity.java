@@ -11,6 +11,7 @@ import de.axeldiewald.ESP8266_LED_Control.R;
 public class SettingsActivity extends Activity {
     public final static String PREF_IP = "PREF_IP_ADDRESS";
     public final static String PREF_PORT = "PREF_PORT_NUMBER";
+    public final static String PREF_WAKE = "PREF_WAKE_DURATION";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
