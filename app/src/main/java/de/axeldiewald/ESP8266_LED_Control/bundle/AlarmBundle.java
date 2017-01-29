@@ -6,7 +6,8 @@ import android.graphics.drawable.GradientDrawable;
 import android.preference.PreferenceManager;
 import android.view.View;
 
-import de.axeldiewald.ESP8266_LED_Control.HttpGetRequest;
+import de.axeldiewald.ESP8266_LED_Control.activity.MainActivity;
+import de.axeldiewald.ESP8266_LED_Control.helper.MqttHelper;
 import de.axeldiewald.ESP8266_LED_Control.activity.SettingsActivity;
 
 public class AlarmBundle extends ParentBundle {
@@ -18,7 +19,7 @@ public class AlarmBundle extends ParentBundle {
     SharedPreferences sharedPreferences;
 
     public AlarmBundle(Context context, Integer pHour, Integer pMinute, Integer pSecond){
-        super(context, new int[]{pHour, pMinute, pSecond}, "setalarm");
+        super(context, new int[]{pHour, pMinute, pSecond}, MqttHelper.MQTT_TOPIC_ALARM_COMMAND);
 
         hour = pHour;
         minute = pMinute;
@@ -49,6 +50,6 @@ public class AlarmBundle extends ParentBundle {
                 sharedPreferences.getString(SettingsActivity.PREF_WAKE, "15"));
         int[] newArg = {0, 0, wakeDuration};
         System.arraycopy(arg, 0, newArg, 0, 2);
-        new HttpGetRequest(context, newArg, path).execute();
+        MainActivity.mqttHelper.publish(newArg, MqttHelper.MQTT_TOPIC_ALARM_COMMAND);
     }
 }

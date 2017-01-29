@@ -3,7 +3,6 @@ package de.axeldiewald.ESP8266_LED_Control.fragment;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,8 +11,10 @@ import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import de.axeldiewald.ESP8266_LED_Control.activity.MainActivity;
 import de.axeldiewald.ESP8266_LED_Control.bundle.ColorBundle;
 import de.axeldiewald.ESP8266_LED_Control.R;
+import de.axeldiewald.ESP8266_LED_Control.helper.MqttHelper;
 
 
 /**
@@ -62,8 +63,7 @@ public class CustomizeFragment extends Fragment implements SeekBar.OnSeekBarChan
 
     View.OnClickListener buttonSendClickHandler = new View.OnClickListener() {
         public void onClick(View view) {
-            ColorBundle colorBundleInst = new ColorBundle(view.getContext(), seekBarRed.getProgress(), seekBarGreen.getProgress(), seekBarBlue.getProgress());
-            colorBundleInst.SendToLedStrip();
+            MainActivity.mqttHelper.publish(new int[] {seekBarRed.getProgress(), seekBarGreen.getProgress(), seekBarBlue.getProgress()}, MqttHelper.MQTT_TOPIC_PWM_COMMAND);
 
         }
     };

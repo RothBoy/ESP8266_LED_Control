@@ -2,21 +2,15 @@ package de.axeldiewald.ESP8266_LED_Control.fragment;
 
 import android.app.Fragment;
 import android.content.Context;
-import android.database.Cursor;
-import android.os.Bundle;
-import android.util.Log;
 import android.view.ContextMenu;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import de.axeldiewald.ESP8266_LED_Control.SQLite.mySQLHelper;
+import de.axeldiewald.ESP8266_LED_Control.helper.SqlHelper;
 import de.axeldiewald.ESP8266_LED_Control.adapter.ViewAdapter;
 import de.axeldiewald.ESP8266_LED_Control.bundle.ParentBundle;
 
@@ -24,7 +18,7 @@ public class BundleFragment extends Fragment {
 
     public ViewAdapter viewAdapter;
     public ArrayList<ParentBundle> list = new ArrayList<>();
-    public static mySQLHelper myDBHelper;
+    public static SqlHelper myDBHelper;
     public final int MENU_CONTEXT_DELETE_ID = 0;
     public int FRAGMENT_GROUP_ID;
     public int buttonResource;
@@ -45,7 +39,7 @@ public class BundleFragment extends Fragment {
         restoreButtons();
     }
 
-    public static void setSQLHelper(mySQLHelper pDBHelper){
+    public static void setSQLHelper(SqlHelper pDBHelper){
         myDBHelper = pDBHelper;
     }
 

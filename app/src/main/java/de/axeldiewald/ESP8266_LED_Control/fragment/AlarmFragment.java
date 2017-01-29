@@ -6,7 +6,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ListView;
-import de.axeldiewald.ESP8266_LED_Control.HttpGetRequest;
+
+import de.axeldiewald.ESP8266_LED_Control.activity.MainActivity;
+import de.axeldiewald.ESP8266_LED_Control.helper.MqttHelper;
 import de.axeldiewald.ESP8266_LED_Control.R;
 
 
@@ -23,7 +25,7 @@ public class AlarmFragment extends BundleFragment {
         buttonId = R.id.buttonAlarm;
         TABLE_NAME = "AlarmsTable";
         BUNDLE_CLASSNAME = "Alarm";
-        BUNDLE_VALUE_NAME = new String[] {"hour", "minute", "second"};
+        BUNDLE_VALUE_NAME = new String[]{"hour", "minute", "second"};
     }
 
     @Override
@@ -33,7 +35,7 @@ public class AlarmFragment extends BundleFragment {
 
         // Inflate the layout for this fragment
         View view = inflater.inflate(fragmentLayoutResource, container, false);
-        listView = (ListView)view.findViewById(listViewId);
+        listView = (ListView) view.findViewById(listViewId);
         listView.setAdapter(viewAdapter);
         // register the GridView for ContextMenu
         registerForContextMenu(listView);
@@ -60,18 +62,16 @@ public class AlarmFragment extends BundleFragment {
 
     View.OnClickListener buttonUnsetAlarmClickHandler = new View.OnClickListener() {
         public void onClick(View view) {
-            int[] args = {};
-            String path = "unsetalarm";
-            new HttpGetRequest(view.getContext(), args, path).execute();
+            String[] args = {"unset"};
+            MainActivity.mqttHelper.publish(args, MqttHelper.MQTT_TOPIC_ALARM_COMMAND);
             // TODO unhighlight the alarm set
         }
     };
 
     View.OnClickListener buttonStopAlarmClickHandler = new View.OnClickListener() {
         public void onClick(View view) {
-            int[] args = {};
-            String path = "stopalarm";
-            new HttpGetRequest(view.getContext(), args, path).execute();
+            String[] args = {"stop"};
+            MainActivity.mqttHelper.publish(args, MqttHelper.MQTT_TOPIC_ALARM_COMMAND);
         }
     };
 

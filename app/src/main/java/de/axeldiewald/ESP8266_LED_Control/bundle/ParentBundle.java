@@ -2,7 +2,9 @@ package de.axeldiewald.ESP8266_LED_Control.bundle;
 
 import android.content.Context;
 import android.view.View;
-import de.axeldiewald.ESP8266_LED_Control.HttpGetRequest;
+
+import de.axeldiewald.ESP8266_LED_Control.activity.MainActivity;
+import de.axeldiewald.ESP8266_LED_Control.helper.MqttHelper;
 
 
 public class ParentBundle {
@@ -21,7 +23,7 @@ public class ParentBundle {
     }
 
     public void SendToLedStrip(){
-        new HttpGetRequest(context, arg, path).execute();
+        MainActivity.mqttHelper.publish(arg, path);
     }
 
     public void setName(String pName){

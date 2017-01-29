@@ -10,11 +10,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
+
+import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
+import org.eclipse.paho.client.mqttv3.MqttCallback;
+import org.eclipse.paho.client.mqttv3.MqttMessage;
 
 import java.util.Arrays;
 
 import de.axeldiewald.ESP8266_LED_Control.R;
-import de.axeldiewald.ESP8266_LED_Control.SQLite.mySQLHelper;
+import de.axeldiewald.ESP8266_LED_Control.helper.SqlHelper;
 import de.axeldiewald.ESP8266_LED_Control.SlidingTabLayout;
 import de.axeldiewald.ESP8266_LED_Control.adapter.TabsPagerAdapter;
 import de.axeldiewald.ESP8266_LED_Control.bundle.AlarmBundle;
@@ -24,12 +29,13 @@ import de.axeldiewald.ESP8266_LED_Control.fragment.BundleFragment;
 import de.axeldiewald.ESP8266_LED_Control.fragment.FavouriteFragment;
 import de.axeldiewald.ESP8266_LED_Control.fragment.NewAlarmDialogFragment;
 import de.axeldiewald.ESP8266_LED_Control.fragment.SaveFavouriteDialogFragment;
+import de.axeldiewald.ESP8266_LED_Control.helper.MqttHelper;
 
 // TODO Parent Classes for DialogFragments
 
 public class MainActivity extends AppCompatActivity implements
         SaveFavouriteDialogFragment.SaveFavouriteDialogListener,
-        NewAlarmDialogFragment.NewAlarmDialogListener{
+        NewAlarmDialogFragment.NewAlarmDialogListener, MqttCallback{
 
     SlidingTabLayout tabLayout;
     // Tab titles
@@ -37,10 +43,12 @@ public class MainActivity extends AppCompatActivity implements
     // declare Settings
     SharedPreferences sharedPreferences;
     // declare SQLite Database
-    mySQLHelper myDBHelper;
+    SqlHelper myDBHelper;
 
     FavouriteFragment favouriteFragment;
     AlarmFragment alarmFragment;
+
+    public static MqttHelper mqttHelper; // TODO remove
 
 
     @Override
@@ -69,8 +77,12 @@ public class MainActivity extends AppCompatActivity implements
                 tabsPagerAdapter.getItem(Arrays.asList(tabs).indexOf("Alarms"));
 
         // SQLite Initialisation
-        myDBHelper = new mySQLHelper(this);
+        myDBHelper = new SqlHelper(this);
         BundleFragment.setSQLHelper(myDBHelper);
+
+        mqttHelper = new MqttHelper(getApplicationContext());
+        mqttHelper.connect();
+
     }
 
     @Override
@@ -120,7 +132,23 @@ public class MainActivity extends AppCompatActivity implements
     protected void onStop() {
         super.onStop();
         myDBHelper.close();
-        Log.w(mySQLHelper.class.getName(), "Database has been closed");
+        Log.w(SqlHelper.class.getName(), "Database has been closed");
     }
+
+    @Override
+    public void connectionLost(Throwable cause) {
+
+    }
+
+    @Override
+    public void messageArrived(String topic, MqttMessage message) throws Exception {
+        Toast.makeText(MainActivity.this, topic + ": " + message.toString(), Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void deliveryComplete(IMqttDeliveryToken token) {
+
+    }
+
 }
 

@@ -2,15 +2,14 @@ package de.axeldiewald.ESP8266_LED_Control.fragment;
 
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.GridView;
 
-import de.axeldiewald.ESP8266_LED_Control.HttpGetRequest;
-import de.axeldiewald.ESP8266_LED_Control.bundle.ColorBundle;
+import de.axeldiewald.ESP8266_LED_Control.activity.MainActivity;
+import de.axeldiewald.ESP8266_LED_Control.helper.MqttHelper;
 import de.axeldiewald.ESP8266_LED_Control.R;
 
 public class FavouriteFragment extends BundleFragment {
@@ -52,9 +51,8 @@ public class FavouriteFragment extends BundleFragment {
 
     View.OnClickListener buttonTurnOffClickHandler = new View.OnClickListener() {
         public void onClick(View view) {
-            int[] args = {};
-            String path = "unsetpwm";
-            new HttpGetRequest(view.getContext(), args, path).execute();
+            int[] args = {0, 0, 0};
+            MainActivity.mqttHelper.publish(args, MqttHelper.MQTT_TOPIC_PWM_COMMAND);
             // TODO unhighlight the favourite set
         }
     };

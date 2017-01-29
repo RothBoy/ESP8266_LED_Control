@@ -1,4 +1,4 @@
-package de.axeldiewald.ESP8266_LED_Control.SQLite;
+package de.axeldiewald.ESP8266_LED_Control.helper;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-public class mySQLHelper extends SQLiteOpenHelper {
+public class SqlHelper extends SQLiteOpenHelper {
 
     private static final int DATABASE_VERSION = 16;
     private static final String DATABASE_NAME = "BundleDatabase";
@@ -20,7 +20,7 @@ public class mySQLHelper extends SQLiteOpenHelper {
     private static String FAVOURITE_TABLE_CREATE;
     private static String ALARM_TABLE_CREATE;
 
-    public mySQLHelper(Context context) {
+    public SqlHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
 
         FAVOURITE_TABLE_CREATE = createCreateCommand(FAVOURITE_TABLE_NAME, FAVOURITE_BUNDLE_VALUE_NAME);
@@ -35,7 +35,7 @@ public class mySQLHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase database,int oldVersion,int newVersion){
-        Log.w(mySQLHelper.class.getName(),
+        Log.w(SqlHelper.class.getName(),
                 "Upgrading database from version " + oldVersion + " to "
                         + newVersion + ", which will destroy all old data");
         database.execSQL("DROP TABLE IF EXISTS " + FAVOURITE_TABLE_NAME);
